@@ -5,6 +5,7 @@ import { Building2, Plus, Trash2, Edit2, Save, X, Upload, PenTool, Landmark, Loa
 import Image from "next/image";
 import type { Firm, Signature } from "@/lib/gst-types";
 import { INDIAN_STATES } from "@/lib/gst-types";
+import { useAutoSave, loadDraft } from "@/lib/use-auto-save";
 
 const emptyFirm = {
   isGst: true,
@@ -19,7 +20,10 @@ export default function MyFirmsPage() {
   const [signatures, setSignatures] = useState<Signature[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState(emptyFirm);
+  const firmDraftKey = "firm_new_draft";
+  const savedFirmDraft = useRef(loadDraft<typeof emptyFirm>(firmDraftKey));
+  const [form, setForm] = useState(savedFirmDraft.current || emptyFirm);
+  const { clearDraft: clearFirmDraft } = useAutoSave(firmDraftKey, form);
 
   // Signature upload state
   const [showSigUpload, setShowSigUpload] = useState<string | null>(null);
@@ -81,6 +85,7 @@ export default function MyFirmsPage() {
       body: JSON.stringify({ action, id: editId, ...form }),
     });
     if (res.ok) {
+      clearFirmDraft();
       setShowForm(false); setEditId(null); setForm(emptyFirm);
       load();
     }

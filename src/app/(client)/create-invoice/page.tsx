@@ -7,6 +7,7 @@ import Image from "next/image";
 import type { Customer, Product, InvoiceType, Firm, Signature, Invoice } from "@/lib/gst-types";
 import { INVOICE_TYPE_LABELS, GST_RATES, UNITS, HSN_LIBRARY } from "@/lib/gst-types";
 import { calculateGST, isInterState, formatCurrency } from "@/lib/gst-utils";
+import { useAutoSave, loadDraft } from "@/lib/use-auto-save";
 
 interface ItemRow {
   description: string;
@@ -57,6 +58,17 @@ export default function CreateInvoicePage() {
   const [notes, setNotes] = useState("");
   const [terms, setTerms] = useState("");
 
+  // Auto-save draft
+  const invoiceDraft = {
+    firmId: selectedFirm?.id || "",
+    customerId: selectedCustomer?.id || "",
+    signatureId: selectedSignature?.id || "",
+    invoiceType, month, date, dueDate, billNumber,
+    quickMode, quickAmount, quickDescription, quickGstRate, quickHsn, gstMode,
+    items, notes, terms,
+  };
+  const { clearDraft: clearInvoiceDraft } = useAutoSave("invoice_draft", invoiceDraft);
+
   const [allInvoices, setAllInvoices] = useState<Invoice[]>([]);
   const [lastBillFilled, setLastBillFilled] = useState(false);
 
@@ -72,12 +84,35 @@ export default function CreateInvoicePage() {
       fetch("/api/invoices").then((r) => r.json()),
     ]).then(([fRes, cRes, pRes, sRes, iRes]) => {
       const f = fRes.data || [];
+      const c = cRes.data || [];
+      const s = sRes.data || [];
       setFirms(f);
       if (f.length === 1) setSelectedFirm(f[0]);
-      setCustomers(cRes.data || []);
+      setCustomers(c);
       setProducts(pRes.data || []);
-      setSignatures(sRes.data || []);
+      setSignatures(s);
       setAllInvoices(iRes.data || []);
+
+      // Restore invoice draft
+      const draft = loadDraft<Record<string, unknown>>("invoice_draft");
+      if (draft) {
+        if (draft.firmId) { const firm = f.find((x: Firm) => x.id === draft.firmId); if (firm) setSelectedFirm(firm); }
+        if (draft.customerId) { const cust = c.find((x: Customer) => x.id === draft.customerId); if (cust) setSelectedCustomer(cust); }
+        if (draft.signatureId) { const sig = s.find((x: Signature) => x.id === draft.signatureId); if (sig) setSelectedSignature(sig); }
+        if (draft.invoiceType) setInvoiceType(draft.invoiceType as InvoiceType);
+        if (draft.date) setDate(draft.date as string);
+        if (draft.dueDate) setDueDate(draft.dueDate as string);
+        if (draft.billNumber) setBillNumber(draft.billNumber as string);
+        if (draft.quickMode !== undefined) setQuickMode(draft.quickMode as boolean);
+        if (draft.quickAmount) setQuickAmount(draft.quickAmount as string);
+        if (draft.quickDescription) setQuickDescription(draft.quickDescription as string);
+        if (draft.quickGstRate !== undefined) setQuickGstRate(draft.quickGstRate as number);
+        if (draft.quickHsn) setQuickHsn(draft.quickHsn as string);
+        if (draft.gstMode) setGstMode(draft.gstMode as "exclude" | "include");
+        if (draft.items && Array.isArray(draft.items) && (draft.items as ItemRow[]).length > 0) setItems(draft.items as ItemRow[]);
+        if (draft.notes) setNotes(draft.notes as string);
+        if (draft.terms) setTerms(draft.terms as string);
+      }
     }).finally(() => setLoading(false));
   }, []);
 
@@ -233,6 +268,7 @@ export default function CreateInvoicePage() {
     setSaving(false);
 
     if (data.success) {
+      clearInvoiceDraft();
       router.push(`/invoice-view?id=${data.data.id}`);
     } else {
       alert(data.error || "Failed to create invoice");

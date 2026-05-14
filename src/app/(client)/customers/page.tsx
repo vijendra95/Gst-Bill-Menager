@@ -4,18 +4,30 @@ import { useState, useEffect, useRef } from "react";
 import { Plus, Pencil, Trash2, Search, X, Loader2 } from "lucide-react";
 import type { Customer } from "@/lib/gst-types";
 import { INDIAN_STATES } from "@/lib/gst-types";
+import { useAutoSave, loadDraft } from "@/lib/use-auto-save";
 
 function CustomerForm({ customer, onSave, onCancel }: {
   customer?: Customer;
   onSave: (data: Record<string, string | boolean>) => void;
   onCancel: () => void;
 }) {
+  const draftKey = customer ? `customer_edit_${customer.id}` : "customer_new_draft";
+  const saved = useRef(loadDraft<Record<string, string | boolean>>(draftKey));
+  const initial = saved.current && !customer ? saved.current : null;
   const [form, setForm] = useState({
-    isGst: customer?.isGst !== false,
-    name: customer?.name || "", address: customer?.address || "", city: customer?.city || "",
-    state: customer?.state || "", stateCode: customer?.stateCode || "", pincode: customer?.pincode || "",
-    gstin: customer?.gstin || "", pan: customer?.pan || "", phone: customer?.phone || "", email: customer?.email || "",
+    isGst: initial?.isGst ?? (customer?.isGst !== false),
+    name: (initial?.name as string) || customer?.name || "",
+    address: (initial?.address as string) || customer?.address || "",
+    city: (initial?.city as string) || customer?.city || "",
+    state: (initial?.state as string) || customer?.state || "",
+    stateCode: (initial?.stateCode as string) || customer?.stateCode || "",
+    pincode: (initial?.pincode as string) || customer?.pincode || "",
+    gstin: (initial?.gstin as string) || customer?.gstin || "",
+    pan: (initial?.pan as string) || customer?.pan || "",
+    phone: (initial?.phone as string) || customer?.phone || "",
+    email: (initial?.email as string) || customer?.email || "",
   });
+  const { clearDraft } = useAutoSave(draftKey, form);
   const [gstLookup, setGstLookup] = useState(false);
   const [gstMsg, setGstMsg] = useState("");
 
@@ -142,7 +154,7 @@ function CustomerForm({ customer, onSave, onCancel }: {
         </div>
         <div className="p-5 border-t flex gap-3">
           <button onClick={onCancel} className="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
-          <button onClick={() => { if (!form.name) { alert("Name is required"); return; } if (form.isGst && !form.gstin) { alert("GSTIN is required for GST party"); return; } onSave(form); }}
+          <button onClick={() => { if (!form.name) { alert("Name is required"); return; } if (form.isGst && !form.gstin) { alert("GSTIN is required for GST party"); return; } clearDraft(); onSave(form); }}
             className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Save</button>
         </div>
       </div>
