@@ -17,6 +17,14 @@ import {
   Star,
   IndianRupee,
   Sparkles,
+  ClipboardList,
+  Truck,
+  QrCode,
+  Bell,
+  Download,
+  Share2,
+  Save,
+  Package,
 } from "lucide-react";
 import PricingSection from "@/components/PricingSection";
 
@@ -66,8 +74,8 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Professional Indian GST bills in Tally format. Add your firms, select parties,
-            enter amount — bill ready! With auto HSN codes, signatures, letterhead, and more.
+            Professional Indian GST bills with GSTIN auto-fill, inventory management, E-Way Bills,
+            GSTR reports, payment reminders, WhatsApp share & PDF download. Complete GST solution!
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -100,24 +108,32 @@ export default function HomePage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-4 bg-cyan-50 text-cyan-700 border border-cyan-100">
               <Sparkles className="w-3.5 h-3.5" /> FEATURES
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Everything You Need for GST Billing</h2>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto">Packed with features that make GST invoicing fast, accurate, and professional.</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">25+ Features for Complete GST Management</h2>
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">Everything from invoice creation to GSTR reports, inventory management, and E-Way Bills — all in one platform.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {[
-              { icon: Building2, title: "My Firms", desc: "Add multiple firms with GSTIN, PAN, bank details. Switch between firms to create invoices.", bg: "#eef9ff", iconColor: "#0ea5e9" },
-              { icon: Users, title: "Bill To (Parties)", desc: "Save all your parties/clients with their GST details. Select and bill in one click.", bg: "#ecfdf5", iconColor: "#10b981" },
-              { icon: FileText, title: "Quick Invoice", desc: "Select firm, select party, enter amount — invoice ready! GST auto-calculated at 18%.", bg: "#fff7ed", iconColor: "#f97316" },
-              { icon: Calculator, title: "GST Include / Exclude", desc: "Enter amount with GST included or excluded. Auto reverse-calculation for inclusive amounts.", bg: "#fef3c7", iconColor: "#d97706" },
-              { icon: ToggleLeft, title: "GST / Non-GST Toggle", desc: "Support for both GST and Non-GST firms. Non-GST firms need only name, address, PAN.", bg: "#fce7f3", iconColor: "#ec4899" },
-              { icon: Search, title: "HSN Code Library", desc: "28+ categories with auto HSN code detection. Music, IT, YouTube, Legal, Gold and more.", bg: "#ede9fe", iconColor: "#8b5cf6" },
-              { icon: PenTool, title: "Director Signatures", desc: "Upload director signatures per firm. Select which signature to use on each invoice.", bg: "#fef2f2", iconColor: "#ef4444" },
-              { icon: Image, title: "Company Letterhead", desc: "Upload your company letterhead. Invoice prints with your letterhead as background.", bg: "#e0f2fe", iconColor: "#0284c7" },
+              { icon: Search, title: "GSTIN Auto-Fill", desc: "Enter GST number — State, PAN auto-fill instantly. No manual typing of party details.", bg: "#ecfdf5", iconColor: "#10b981" },
+              { icon: FileText, title: "10+ Document Types", desc: "Tax Invoice, Credit/Debit Note, Quotation, Proforma, Delivery Challan, Purchase Bill & more.", bg: "#fff7ed", iconColor: "#f97316" },
+              { icon: Building2, title: "My Firms", desc: "Add multiple firms with GSTIN, PAN, bank details. Switch between firms for invoicing.", bg: "#eef9ff", iconColor: "#0ea5e9" },
+              { icon: Users, title: "Bill To (Parties)", desc: "Save all your parties/clients with GST details. Select and bill in one click.", bg: "#f0fdfa", iconColor: "#0d9488" },
+              { icon: ClipboardList, title: "Inventory Management", desc: "Track stock in/out, purchase & selling price, low stock alerts. Item-wise stock reports.", bg: "#fef3c7", iconColor: "#d97706" },
+              { icon: Truck, title: "E-Way Bill", desc: "Generate E-Way Bills from invoices. Vehicle number, transporter, distance tracking.", bg: "#fce7f3", iconColor: "#ec4899" },
+              { icon: BarChart3, title: "GSTR Reports", desc: "GSTR-1, GSTR-3B, HSN Summary reports. CSV/Excel export ready for filing.", bg: "#ede9fe", iconColor: "#8b5cf6" },
+              { icon: Bell, title: "Payment Reminders", desc: "Send WhatsApp reminders for pending payments. Track paid/unpaid/partial status.", bg: "#fef2f2", iconColor: "#ef4444" },
+              { icon: Share2, title: "WhatsApp Share", desc: "Share invoices directly on WhatsApp with formatted message, amount & link.", bg: "#dcfce7", iconColor: "#16a34a" },
+              { icon: Download, title: "PDF Download", desc: "Download invoices as high-quality A4 PDF. Print or share digitally.", bg: "#e0f2fe", iconColor: "#0284c7" },
+              { icon: QrCode, title: "E-Invoice QR Code", desc: "Auto QR code on tax invoices for e-invoice compliance. IRN ready.", bg: "#eef2ff", iconColor: "#6366f1" },
+              { icon: Package, title: "Tally Export", desc: "Export data in Tally-compatible XML & CSV format. Easy import to Tally.", bg: "#f0fdfa", iconColor: "#0d9488" },
+              { icon: Calculator, title: "GST Include / Exclude", desc: "Enter amount with GST included or excluded. Auto reverse-calculation.", bg: "#fef3c7", iconColor: "#d97706" },
+              { icon: Save, title: "Auto-Save Forms", desc: "All forms auto-save while typing. Navigate away — data stays. No data loss ever.", bg: "#ecfdf5", iconColor: "#10b981" },
+              { icon: PenTool, title: "Director Signatures", desc: "Upload director signatures per firm. Select signature on each invoice.", bg: "#fef2f2", iconColor: "#ef4444" },
+              { icon: Image, title: "Company Letterhead", desc: "Upload your letterhead. Invoice prints with your letterhead as background.", bg: "#e0f2fe", iconColor: "#0284c7" },
               { icon: IndianRupee, title: "Tally-Style Format", desc: "Indian GST invoice format like Tally. Bordered tables, HSN summary, Amount in Words.", bg: "#dcfce7", iconColor: "#16a34a" },
-              { icon: Repeat, title: "Repeat Last Bill", desc: "Same firm + same party? All settings auto-fill from last bill. Just enter new amount.", bg: "#fef9c3", iconColor: "#ca8a04" },
-              { icon: Shield, title: "Bill Number Check", desc: "Manual bill numbers with duplicate detection. Never create duplicate invoice numbers.", bg: "#f0fdfa", iconColor: "#0d9488" },
-              { icon: BarChart3, title: "Reports & Dashboard", desc: "Revenue tracking, pending payments, customer insights. All in one clean dashboard.", bg: "#eef2ff", iconColor: "#6366f1" },
+              { icon: Repeat, title: "Repeat Last Bill", desc: "Same firm + party? Settings auto-fill from last bill. Just enter new amount.", bg: "#fef9c3", iconColor: "#ca8a04" },
+              { icon: ToggleLeft, title: "GST / Non-GST", desc: "Support for both GST and Non-GST firms. Toggle per firm or party.", bg: "#fce7f3", iconColor: "#ec4899" },
+              { icon: Shield, title: "Admin Panel", desc: "Full admin access to all clients' data. View, edit, delete — complete control.", bg: "#ede9fe", iconColor: "#8b5cf6" },
             ].map((f) => (
               <div key={f.title} className="rounded-2xl p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group bg-white hover:-translate-y-1">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ background: f.bg }}>
@@ -136,7 +152,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <p className="text-lg text-gray-500">Create professional GST invoices in 3 simple steps</p>
+            <p className="text-lg text-gray-500">From GSTIN to PDF invoice in under 30 seconds</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -164,15 +180,15 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Why GST Bill Manager?</h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">Built specifically for Indian businesses. Simple, fast, and accurate.</p>
+            <p className="text-lg text-white/70 max-w-2xl mx-auto">Complete GST solution — invoicing, inventory, E-Way Bills, GSTR reports, and more.</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Zap, title: "Super Fast", desc: "Create invoice in under 30 seconds", color: "text-amber-300" },
-              { icon: IndianRupee, title: "Indian Format", desc: "Tally-style GST bill format", color: "text-emerald-300" },
-              { icon: Shield, title: "100% Accurate", desc: "Auto GST calculation with HSN codes", color: "text-cyan-200" },
-              { icon: Star, title: "Free to Use", desc: "No hidden charges, start immediately", color: "text-orange-300" },
+              { icon: Zap, title: "Super Fast", desc: "Invoice ready in 30 seconds", color: "text-amber-300" },
+              { icon: ClipboardList, title: "20+ Features", desc: "Invoice, Inventory, E-Way, GSTR", color: "text-emerald-300" },
+              { icon: Shield, title: "100% Accurate", desc: "Auto GST calculation + HSN codes", color: "text-cyan-200" },
+              { icon: Star, title: "Free to Start", desc: "No credit card required", color: "text-orange-300" },
             ].map((f) => (
               <div key={f.title} className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/15 hover:bg-white/20 transition-all duration-300">
                 <f.icon className={`w-8 h-8 mx-auto mb-3 ${f.color}`} />
