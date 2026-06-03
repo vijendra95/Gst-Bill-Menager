@@ -237,17 +237,17 @@ function InvoiceViewContent() {
 
           {/* ═══ ITEMS TABLE ═══ */}
           <div>
-            <table className="w-full text-[11px] border-collapse" style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", tableLayout: "fixed" }}>
+            <table className="w-full text-[11px] border-collapse" style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
               <colgroup>
-                <col style={{ width: "28px" }} />
-                <col />
-                {cv.hsn && <col style={{ width: "60px" }} />}
-                {cv.qty && <col style={{ width: "42px" }} />}
-                {cv.rate && <col style={{ width: "65px" }} />}
-                {cv.taxableAmount && <col style={{ width: "72px" }} />}
-                {cv.gstRate && (!invoice.isInterState ? (<><col style={{ width: "48px" }} /><col style={{ width: "48px" }} /></>) : (<col style={{ width: "48px" }} />))}
-                <col style={{ width: "65px" }} />
-                <col style={{ width: "72px" }} />
+                <col style={{ width: "4%" }} />
+                <col style={{ width: "auto" }} />
+                {cv.hsn && <col style={{ width: "8%" }} />}
+                {cv.qty && <col style={{ width: "6%" }} />}
+                {cv.rate && <col style={{ width: "10%" }} />}
+                {cv.taxableAmount && <col style={{ width: "12%" }} />}
+                {cv.gstRate && (!invoice.isInterState ? (<><col style={{ width: "7%" }} /><col style={{ width: "7%" }} /></>) : (<col style={{ width: "7%" }} />))}
+                <col style={{ width: "10%" }} />
+                <col style={{ width: "12%" }} />
               </colgroup>
               <thead>
                 <tr className="text-white" style={{ background: "linear-gradient(135deg, #0a1628 0%, #122a4e 40%, #1a3f6f 100%)" }}>
