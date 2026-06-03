@@ -149,6 +149,26 @@ function CreateInvoiceContent() {
           if (draft.notes) setNotes(draft.notes as string);
           if (draft.terms) setTerms(draft.terms as string);
         }
+
+        // Auto-increment bill number from last invoice (only for new invoices)
+        if (!editId && !draft?.billNumber) {
+          const invoices = iRes.data || [];
+          if (invoices.length > 0) {
+            const lastNum = invoices[0].invoiceNumber || "";
+            const match = lastNum.match(/^(\d+)([\/-])(.+)$/);
+            if (match) {
+              const next = String(parseInt(match[1], 10) + 1);
+              setBillNumber(`${next}${match[2]}${match[3]}`);
+            } else {
+              const numMatch = lastNum.match(/(\d+)/);
+              if (numMatch) {
+                const idx = lastNum.indexOf(numMatch[1]);
+                const next = String(parseInt(numMatch[1], 10) + 1);
+                setBillNumber(lastNum.substring(0, idx) + next + lastNum.substring(idx + numMatch[1].length));
+              }
+            }
+          }
+        }
       }
     }).finally(() => setLoading(false));
   }, [editId]);
