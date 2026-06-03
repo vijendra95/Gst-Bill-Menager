@@ -344,7 +344,7 @@ export const HSN_LIBRARY: HsnEntry[] = [
   { code: "998315", category: "Graphic Design", description: "Graphic design, branding, print design", gstRate: 18 },
   { code: "998319", category: "Content Writing", description: "Copywriting, content creation, blogging, SEO", gstRate: 18 },
   { code: "998316", category: "Social Media", description: "Social media management, influencer marketing", gstRate: 18 },
-  { code: "9996", category: "YouTube / Recreational, Cultural & Sporting", description: "YouTube channels, content creators, recreational, cultural, sporting services", gstRate: 18 },
+  { code: "9996", category: "YouTube Sales", description: "YouTube channels, content creators, digital media services", gstRate: 18 },
   { code: "999611", category: "Sound Recording", description: "Sound recording, music recording studio services", gstRate: 18 },
   { code: "999612", category: "Film / TV / Radio Production", description: "Motion picture, videotape, television, radio programme production", gstRate: 18 },
   { code: "999613", category: "Audiovisual Post-Production", description: "Audiovisual editing, dubbing, subtitling, post-production", gstRate: 18 },
