@@ -3,11 +3,15 @@ import { getSession } from "@/lib/session";
 import type { Product } from "@/lib/gst-types";
 import { generateId } from "@/lib/gst-utils";
 
-export async function GET() {
+export async function GET(req: Request) {
   const session = await getSession();
   if (!session) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const key = `gst_products:${session.id}`;
+  const { searchParams } = new URL(req.url);
+  const adminUserId = searchParams.get("adminUserId");
+  const lookupUserId = (adminUserId && session.role === "admin") ? adminUserId : session.id;
+
+  const key = `gst_products:${lookupUserId}`;
   const products: Product[] = (await kv.get(key)) || [];
   return Response.json({ data: products });
 }

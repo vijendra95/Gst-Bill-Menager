@@ -18,7 +18,7 @@ export default function AdminEmployeesPage() {
   useEffect(() => {
     if (didFetch.current) return;
     didFetch.current = true;
-    fetch("/api/admin/users").then((r) => r.json()).then((res) => setClients(res.data || [])).finally(() => setLoading(false));
+    fetch("/api/admin/clients").then((r) => r.json()).then((res) => setClients(res.data || [])).finally(() => setLoading(false));
   }, []);
 
   const loadData = async (uid: string) => {
