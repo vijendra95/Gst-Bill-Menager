@@ -27,6 +27,7 @@ export default function MyFirmsPage() {
 
   // Signature upload state
   const [showSigUpload, setShowSigUpload] = useState<string | null>(null);
+  const [editSigId, setEditSigId] = useState<string | null>(null);
   const [sigName, setSigName] = useState("");
   const [sigImage, setSigImage] = useState("");
   const [gstLookup, setGstLookup] = useState(false);
@@ -125,15 +126,26 @@ export default function MyFirmsPage() {
 
   const handleSigUpload = async () => {
     if (!sigName || !sigImage || !showSigUpload) return alert("Director name and signature image required");
+    const action = editSigId ? "update" : "create";
+    const payload = editSigId
+      ? { action, id: editSigId, directorName: sigName, imageData: sigImage }
+      : { action, firmId: showSigUpload, directorName: sigName, imageData: sigImage };
     const res = await fetch("/api/signatures", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "create", firmId: showSigUpload, directorName: sigName, imageData: sigImage }),
+      body: JSON.stringify(payload),
     });
     if (res.ok) {
-      setShowSigUpload(null); setSigName(""); setSigImage("");
+      setShowSigUpload(null); setEditSigId(null); setSigName(""); setSigImage("");
       load();
     }
+  };
+
+  const handleSigEdit = (sig: Signature) => {
+    setEditSigId(sig.id);
+    setSigName(sig.directorName);
+    setSigImage(sig.imageData);
+    setShowSigUpload(sig.firmId);
   };
 
   const handleSigDelete = async (id: string) => {
@@ -328,8 +340,8 @@ export default function MyFirmsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-white rounded-xl w-full max-w-md mx-4 p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold flex items-center gap-2"><PenTool className="w-5 h-5" /> Upload Director Signature</h2>
-              <button onClick={() => { setShowSigUpload(null); setSigName(""); setSigImage(""); }}>
+              <h2 className="text-lg font-semibold flex items-center gap-2"><PenTool className="w-5 h-5" /> {editSigId ? "Edit" : "Upload"} Director Signature</h2>
+              <button onClick={() => { setShowSigUpload(null); setEditSigId(null); setSigName(""); setSigImage(""); }}>
                 <X className="w-5 h-5 text-gray-400" />
               </button>
             </div>
@@ -435,10 +447,16 @@ export default function MyFirmsPage() {
                       <div key={sig.id} className="border rounded-lg p-2 bg-gray-50 relative group">
                         <Image src={sig.imageData} alt={sig.directorName} width={100} height={50} className="h-12 w-auto object-contain" />
                         <p className="text-xs text-gray-600 mt-1 text-center">{sig.directorName}</p>
-                        <button onClick={() => handleSigDelete(sig.id)}
-                          className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition">
-                          &times;
-                        </button>
+                        <div className="absolute -top-1.5 -right-1.5 flex gap-1 opacity-0 group-hover:opacity-100 transition">
+                          <button onClick={() => handleSigEdit(sig)}
+                            className="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                            <Edit2 className="w-3 h-3" />
+                          </button>
+                          <button onClick={() => handleSigDelete(sig.id)}
+                            className="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                            &times;
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>

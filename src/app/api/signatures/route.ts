@@ -41,6 +41,15 @@ export async function POST(req: Request) {
       return Response.json({ success: true, data: sig });
     }
 
+    if (action === "update") {
+      const idx = sigs.findIndex((s) => s.id === body.id);
+      if (idx === -1) return Response.json({ error: "Signature not found" }, { status: 404 });
+      if (body.directorName) sigs[idx].directorName = body.directorName;
+      if (body.imageData) sigs[idx].imageData = body.imageData;
+      await kv.set(`signatures_${session.id}`, sigs);
+      return Response.json({ success: true, data: sigs[idx] });
+    }
+
     if (action === "delete") {
       const filtered = sigs.filter((s) => s.id !== body.id);
       await kv.set(`signatures_${session.id}`, filtered);

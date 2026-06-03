@@ -54,7 +54,8 @@ function InvoiceViewContent() {
       const pdfW = pdf.internal.pageSize.getWidth();
       const pdfH = (canvas.height * pdfW) / canvas.width;
       pdf.addImage(imgData, "PNG", 0, 0, pdfW, pdfH);
-      pdf.save(`${invoice.invoiceNumber.replace(/[\/\s]/g, "_")}.pdf`);
+      const custName = invoice.customer.name.replace(/[^a-zA-Z0-9\u0900-\u097F\u0600-\u06FF ]/g, "").trim().replace(/\s+/g, "_");
+      pdf.save(`${invoice.invoiceNumber.replace(/[\/\s]/g, "_")}_${custName}.pdf`);
     } catch {
       window.print();
     } finally {

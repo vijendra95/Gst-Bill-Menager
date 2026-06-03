@@ -191,8 +191,16 @@ export function ClassicTemplate({ invoice, settings, currentUserId, cv }: Invoic
               {cv.hsn && <th className="p-2 border-r border-black text-center w-[70px]">HSN/SAC</th>}
               {cv.qty && <th className="p-2 border-r border-black text-center w-[60px]">Quantity</th>}
               {cv.rate && <th className="p-2 border-r border-black text-right w-[80px]">Rate</th>}
-              {cv.gstRate && <th className="p-2 border-r border-black text-center w-[50px]">Disc. %</th>}
-              <th className="p-2 text-right w-[90px]">Amount</th>
+              {cv.taxableAmount && <th className="p-2 border-r border-black text-right w-[75px]">Amount</th>}
+              {cv.gstRate && (!invoice.isInterState ? (
+                <>
+                  <th className="p-2 border-r border-black text-center w-[48px]">CGST%</th>
+                  <th className="p-2 border-r border-black text-center w-[48px]">SGST%</th>
+                </>
+              ) : (
+                <th className="p-2 border-r border-black text-center w-[48px]">IGST%</th>
+              ))}
+              <th className="p-2 text-right w-[75px]">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -203,7 +211,15 @@ export function ClassicTemplate({ invoice, settings, currentUserId, cv }: Invoic
                 {cv.hsn && <td className="p-2 border-r border-black/30 text-center font-mono text-[10px]">{item.hsn}</td>}
                 {cv.qty && <td className="p-2 border-r border-black/30 text-center">{item.qty}{cv.unit ? ` ${item.unit}` : ""}</td>}
                 {cv.rate && <td className="p-2 border-r border-black/30 text-right">{formatCurrency(item.rate)}</td>}
-                {cv.gstRate && <td className="p-2 border-r border-black/30 text-center">{item.gstRate}%</td>}
+                {cv.taxableAmount && <td className="p-2 border-r border-black/30 text-right">{formatCurrency(item.amount)}</td>}
+                {cv.gstRate && (!invoice.isInterState ? (
+                  <>
+                    <td className="p-2 border-r border-black/30 text-center">{item.gstRate / 2}%</td>
+                    <td className="p-2 border-r border-black/30 text-center">{item.gstRate / 2}%</td>
+                  </>
+                ) : (
+                  <td className="p-2 border-r border-black/30 text-center">{item.gstRate}%</td>
+                ))}
                 <td className="p-2 text-right font-semibold">{formatCurrency(item.amount + item.cgst + item.sgst + item.igst)}</td>
               </tr>
             ))}
@@ -215,7 +231,12 @@ export function ClassicTemplate({ invoice, settings, currentUserId, cv }: Invoic
                 {cv.hsn && <td className="border-r border-black/20"></td>}
                 {cv.qty && <td className="border-r border-black/20"></td>}
                 {cv.rate && <td className="border-r border-black/20"></td>}
-                {cv.gstRate && <td className="border-r border-black/20"></td>}
+                {cv.taxableAmount && <td className="border-r border-black/20"></td>}
+                {cv.gstRate && (!invoice.isInterState ? (
+                  <><td className="border-r border-black/20"></td><td className="border-r border-black/20"></td></>
+                ) : (
+                  <td className="border-r border-black/20"></td>
+                ))}
                 <td></td>
               </tr>
             ))}
@@ -227,7 +248,12 @@ export function ClassicTemplate({ invoice, settings, currentUserId, cv }: Invoic
               {cv.hsn && <td className="p-2 border-r border-black"></td>}
               {cv.qty && <td className="p-2 border-r border-black text-center">{invoice.items.reduce((s, i) => s + i.qty, 0)}</td>}
               {cv.rate && <td className="p-2 border-r border-black"></td>}
-              {cv.gstRate && <td className="p-2 border-r border-black"></td>}
+              {cv.taxableAmount && <td className="p-2 border-r border-black"></td>}
+              {cv.gstRate && (!invoice.isInterState ? (
+                <><td className="p-2 border-r border-black"></td><td className="p-2 border-r border-black"></td></>
+              ) : (
+                <td className="p-2 border-r border-black"></td>
+              ))}
               <td className="p-2 text-right text-[13px]">{formatCurrency(invoice.grandTotal)}</td>
             </tr>
           </tfoot>
@@ -430,8 +456,15 @@ export function MinimalTemplate({ invoice, settings, currentUserId, cv }: Invoic
               {cv.qty && <th className="p-3 text-center w-[60px]">Qty</th>}
               {cv.rate && <th className="p-3 text-right w-[80px]">Rate</th>}
               {cv.taxableAmount && <th className="p-3 text-right w-[80px]">Taxable</th>}
-              {cv.gstRate && <th className="p-3 text-center w-[50px]">GST</th>}
-              <th className="p-3 text-right w-[90px]">Amount</th>
+              {cv.gstRate && (!invoice.isInterState ? (
+                <>
+                  <th className="p-3 text-center w-[48px]">CGST%</th>
+                  <th className="p-3 text-center w-[48px]">SGST%</th>
+                </>
+              ) : (
+                <th className="p-3 text-center w-[48px]">IGST%</th>
+              ))}
+              <th className="p-3 text-right w-[80px]">Amount</th>
             </tr>
           </thead>
           <tbody>
@@ -443,7 +476,14 @@ export function MinimalTemplate({ invoice, settings, currentUserId, cv }: Invoic
                 {cv.qty && <td className="p-3 text-center text-gray-600">{item.qty}{cv.unit ? ` ${item.unit}` : ""}</td>}
                 {cv.rate && <td className="p-3 text-right text-gray-600">{formatCurrency(item.rate)}</td>}
                 {cv.taxableAmount && <td className="p-3 text-right text-gray-700">{formatCurrency(item.amount)}</td>}
-                {cv.gstRate && <td className="p-3 text-center text-gray-500">{item.gstRate}%</td>}
+                {cv.gstRate && (!invoice.isInterState ? (
+                  <>
+                    <td className="p-3 text-center text-gray-500">{item.gstRate / 2}%</td>
+                    <td className="p-3 text-center text-gray-500">{item.gstRate / 2}%</td>
+                  </>
+                ) : (
+                  <td className="p-3 text-center text-gray-500">{item.gstRate}%</td>
+                ))}
                 <td className="p-3 text-right font-semibold text-gray-900">{formatCurrency(item.amount + item.cgst + item.sgst + item.igst)}</td>
               </tr>
             ))}
